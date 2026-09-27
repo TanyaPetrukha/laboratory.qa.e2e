@@ -12,9 +12,18 @@ test(
     await page
       .locator(`//input[contains(@aria-label, "${tableOptions[0].name}")]`)
       .check();
+
     await expect(
       page.locator('//*[@data-testid="interactions-selected-count"]'),
     ).toContainText("1");
+
+    await page
+      .locator(`//input[contains(@aria-label, "${tableOptions[1].name}")]`)
+      .check();
+
+    await expect(
+      page.locator('//*[@data-testid="interactions-selected-count"]'),
+    ).toContainText("2");
   },
 );
 
@@ -44,7 +53,12 @@ test(
 
     await sortButton.click();
 
-    const actualOptions = await tableOptions.allTextContents();
+    let actualOptions = await tableOptions.allTextContents();
     expect(actualOptions).toEqual(expectedDescending);
+
+    await sortButton.click();
+
+    actualOptions = await tableOptions.allTextContents();
+    expect(actualOptions).toEqual(expectedAscending);
   },
 );
